@@ -3,5 +3,5 @@
 import kageext
 
 
-def show_ext_version():
-    print(kageext.eversion())
+def ext_version():
+    return kageext.eversion()
