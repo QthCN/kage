@@ -1,6 +1,12 @@
 #include <iostream>
 
+#include "numpy_import.h"
+#ifdef NO_IMPORT_ARRAY
+#undef NO_IMPORT_ARRAY
+#endif
+#include "numpy/arrayobject.h"
 #include "Python.h"
+
 
 const std::string EXT_VERSION = "0.1";
 
@@ -32,6 +38,8 @@ PyInit_kageext(void)
     m = PyModule_Create(&kageextmodule);
     if (m == NULL)
         return NULL;
+
+    import_array();
 
     return m;
 }
