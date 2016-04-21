@@ -1,0 +1,15 @@
+from distutils.core import setup, Extension
+
+EXTRA_COMPILE_ARGS = ['-std=c++11']
+
+kage_module = Extension('kageext',
+                        sources=['src/kageext.cpp'],
+                        extra_compile_args=EXTRA_COMPILE_ARGS)
+
+setup(name='Kage',
+      version='1.0',
+      description='Kage',
+      author='Qin TianHuan',
+      author_email='tianhuan@bingotree.cn',
+      packages=['kage'],
+      ext_modules=[kage_module])
