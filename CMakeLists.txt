@@ -6,6 +6,6 @@ include_directories("/Users/thuanqin/Desktop/Dev/lab/python3.5/lib/python3.5/sit
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(SOURCE_FILES main.cpp src/kageext.cpp src/numpy_import.h)
+set(SOURCE_FILES main.cpp src/kageext.cpp src/numpy_import.h src/datarobot2d.h src/datarobot2d.cpp)
 
 add_executable(kage ${SOURCE_FILES})

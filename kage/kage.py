@@ -5,3 +5,29 @@ import kageext
 
 def ext_version():
     return kageext.eversion()
+
+
+class DataRobot2D(object):
+
+    def __init__(self, data, columns, index):
+        columns = tuple(columns)
+        index = tuple(index)
+
+        self._cpp_obj_id = kageext.call('create_datarobot2d',
+                                        (data, columns, index))
+
+    def __get_cpp_obj_id(self):
+        return self._cpp_obj_id
+
+    def __str__(self):
+        datarobot2d = kageext.call('get_datarobot2d_content',
+                                   (self.__get_cpp_obj_id(),))
+        datarobot2d_str = 'columns: {c}\nindex: {i}\nndarray:\n {a}'.format(
+            c=datarobot2d[1],
+            i=datarobot2d[2],
+            a=datarobot2d[0]
+        )
+        return datarobot2d_str
+
+    def __del__(self):
+        kageext.call('deconstruct_datarobot2d', (self.__get_cpp_obj_id(),))
