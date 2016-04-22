@@ -19,9 +19,13 @@ class DataRobot2D(object):
     def __get_cpp_obj_id(self):
         return self._cpp_obj_id
 
-    def __str__(self):
+    def get_metadata(self):
         datarobot2d = kageext.call('get_datarobot2d_content',
                                    (self.__get_cpp_obj_id(),))
+        return datarobot2d
+
+    def __str__(self):
+        datarobot2d = self.get_metadata()
         datarobot2d_str = 'columns: {c}\nindex: {i}\nndarray:\n {a}'.format(
             c=datarobot2d[1],
             i=datarobot2d[2],
