@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
 
-import kageext
+try:
+    import kageext
+except:
+    # Sphinx-doc need to import modules first to generate auto docs,
+    # but I cann't figure out how to let it import C extension
+    kageext = None
 
 
 def ext_version():
@@ -8,6 +13,7 @@ def ext_version():
 
 
 class DataRobot2D(object):
+    """DataRobot 2D,用于操作二维数据"""
 
     def __init__(self, data, columns, index):
         columns = tuple(columns)
@@ -20,6 +26,11 @@ class DataRobot2D(object):
         return self._cpp_obj_id
 
     def get_metadata(self):
+        """获取DataRobot2D的元数据
+
+        :returns: (numpy矩阵, 列名, 行名)
+        :rtype: 元组
+        """
         datarobot2d = kageext.call('get_datarobot2d_content',
                                    (self.__get_cpp_obj_id(),))
         return datarobot2d
