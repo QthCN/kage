@@ -6,7 +6,7 @@ EXTRA_COMPILE_ARGS = ['-std=c++11', '-stdlib=libc++', '-mmacosx-version-min=10.8
 EXTRA_LINK_ARGS = ['-std=c++11', '-stdlib=libc++', '-mmacosx-version-min=10.8']
 
 kageext_module = Extension('kageext',
-                           sources=['src/kageext.cpp', 'src/datarobot2d.cpp'],
+                           sources=['src/kageext.cpp', 'src/datarobot2d.cpp', 'src/utils.cpp'],
                            include_dirs=[np.get_include()],
                            extra_compile_args=EXTRA_COMPILE_ARGS,
                            extra_link_args=EXTRA_LINK_ARGS)

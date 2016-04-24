@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <map>
 
 #include "numpy_import.h"
 #ifdef NO_IMPORT_ARRAY
@@ -9,6 +10,7 @@
 #include "Python.h"
 
 #include "datarobot2d.h"
+#include "utils.h"
 
 #define ARGS_NUM_CHECK(NUM)  if (PyTuple_GET_SIZE(cpp_args) != NUM) { \
                                  PyErr_SetString(kageext_error, "need NUM args"); \
@@ -18,7 +20,7 @@
 
 const std::string EXT_VERSION = "0.1";
 static PyObject *kageext_error;
-static std::vector<std::shared_ptr<DataRobot2D> > datarobot2ds;
+static std::map<std::string, std::shared_ptr<DataRobot2D> > datarobot2ds_map;
 
 // get cpp extension's version
 static PyObject *
@@ -58,18 +60,20 @@ static std::vector<std::string> s_parse_tuple_to_vector(PyObject *tuple) {
 }
 
 static std::shared_ptr<DataRobot2D> get_datarobot2d_from_pyobj(PyObject *id) {
-    std::vector<std::shared_ptr<DataRobot2D> >::size_type datarobot2d_id;
-    if(!PyArg_Parse(id, "l", &datarobot2d_id)) {
+    const char *datarobot2d_s;
+    if(!PyArg_Parse(id, "s", &datarobot2d_s)) {
         PyErr_SetString(kageext_error, "get_datarobot2d_content with no valid obj_id");
         return NULL;
     }
 
-    if (datarobot2d_id >= datarobot2ds.size()) {
+    std::string datarobot2d_id(datarobot2d_s);
+
+    if (datarobot2ds_map.find(datarobot2d_id) == datarobot2ds_map.end()) {
         PyErr_SetString(kageext_error, "no such obj_id");
         return NULL;
     }
 
-    std::shared_ptr<DataRobot2D> dataRobot2D = datarobot2ds[datarobot2d_id];
+    std::shared_ptr<DataRobot2D> dataRobot2D = datarobot2ds_map[datarobot2d_id];
     return dataRobot2D;
 }
 
@@ -113,9 +117,9 @@ call(PyObject *self, PyObject *args)
 
         PyArrayObject *array = (PyArrayObject *)data;
         std::shared_ptr<DataRobot2D> dataRobot2D = std::make_shared<DataRobot2D>(array, v_columns, v_index);
-        datarobot2ds.push_back(dataRobot2D);
-        auto datarobot_id = datarobot2ds.size() - 1;
-        return PyLong_FromLong(static_cast<long>(datarobot_id));
+        std::string uuid = get_uuid();
+        datarobot2ds_map[uuid] = dataRobot2D;
+        return PyUnicode_FromString(uuid.c_str());
     } else if (strcmp(function, "get_datarobot2d_content") == 0) {
         PyObject *datarobot2d_id_obj;
 
