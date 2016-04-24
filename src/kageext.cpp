@@ -144,7 +144,14 @@ call(PyObject *self, PyObject *args)
         datarobot2d_id_obj = PyTuple_GET_ITEM(cpp_args, 0);
         std::shared_ptr<DataRobot2D> dataRobot2D = get_datarobot2d_from_pyobj(datarobot2d_id_obj);
         dataRobot2D->dec_array_ref();
-        // tianhuan(todo) datarobot2d still live in datarobot2ds now.
+        const char *datarobot2d_s;
+        if(!PyArg_Parse(datarobot2d_id_obj, "s", &datarobot2d_s)) {
+            PyErr_SetString(kageext_error, "deconstruct_datarobot2d with no valid obj_id");
+            return NULL;
+        }
+        std::string datarobot2d_id(datarobot2d_s);
+        datarobot2ds_map.erase(datarobot2d_id);
+
         Py_RETURN_NONE;
     }
     Py_RETURN_NONE;
