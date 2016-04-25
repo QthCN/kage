@@ -21,10 +21,16 @@ public:
     ~DataRobot2D() {
 
     }
+    
+    // 获取array
     PyArrayObject *get_array();
+    // 获取array,且不增加其引用计数
     PyArrayObject *get_array_norefinc();
+    // 获取columns
     std::vector<std::string> get_columns();
+    // 获取index
     std::vector<std::string> get_index();
+    // 减少array的引用计数
     void dec_array_ref();
 
 private:
