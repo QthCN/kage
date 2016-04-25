@@ -21,6 +21,7 @@ class DataRobot2D(object):
 
         self._cpp_obj_id = kageext.call('create_datarobot2d',
                                         (data, columns, index))
+        print(u'obj_id: {0}'.format(self._cpp_obj_id))
 
     def __get_cpp_obj_id(self):
         return self._cpp_obj_id

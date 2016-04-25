@@ -17,9 +17,3 @@ std::vector<std::string> DataRobot2D::get_index() {
     return index;
 }
 
-void DataRobot2D::dec_array_ref() {
-    if (array != nullptr) {
-        Py_XDECREF(array);
-        array = nullptr;
-    }
-}

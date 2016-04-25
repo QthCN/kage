@@ -142,8 +142,6 @@ call(PyObject *self, PyObject *args)
         ARGS_NUM_CHECK(1)
 
         datarobot2d_id_obj = PyTuple_GET_ITEM(cpp_args, 0);
-        std::shared_ptr<DataRobot2D> dataRobot2D = get_datarobot2d_from_pyobj(datarobot2d_id_obj);
-        dataRobot2D->dec_array_ref();
         const char *datarobot2d_s;
         if(!PyArg_Parse(datarobot2d_id_obj, "s", &datarobot2d_s)) {
             PyErr_SetString(kageext_error, "deconstruct_datarobot2d with no valid obj_id");

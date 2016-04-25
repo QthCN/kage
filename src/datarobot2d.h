@@ -19,7 +19,10 @@ public:
         Py_XINCREF(array);
     }
     ~DataRobot2D() {
-
+        if (array != nullptr) {
+            Py_XDECREF(array);
+            array = nullptr;
+        }
     }
 
     // 获取array
@@ -30,8 +33,6 @@ public:
     std::vector<std::string> get_columns();
     // 获取index
     std::vector<std::string> get_index();
-    // 减少array的引用计数
-    void dec_array_ref();
 
 private:
     PyArrayObject *array;
