@@ -21,7 +21,7 @@ public:
     ~DataRobot2D() {
 
     }
-    
+
     // 获取array
     PyArrayObject *get_array();
     // 获取array,且不增加其引用计数
@@ -35,8 +35,8 @@ public:
 
 private:
     PyArrayObject *array;
-    std::vector<std::string> columns;
     std::vector<std::string> index;
+    std::vector<std::string> columns;
 };
 
 #endif //KAGE_DATAROBOT2D_H
