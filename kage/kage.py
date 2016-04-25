@@ -15,16 +15,20 @@ def ext_version():
 class DataRobot2D(object):
     """DataRobot 2D,用于操作二维数据"""
 
-    def __init__(self, data, columns, index):
+    def __init__(self, data, columns, index, print_obj_id=True):
         columns = tuple(columns)
         index = tuple(index)
 
         self._cpp_obj_id = kageext.call('create_datarobot2d',
                                         (data, columns, index))
-        print(u'obj_id: {0}'.format(self._cpp_obj_id))
+        if print_obj_id:
+            print(u'obj_id: {0}'.format(self._cpp_obj_id))
 
     def __get_cpp_obj_id(self):
         return self._cpp_obj_id
+
+    def get_cpp_obj_id(self):
+        return self.__get_cpp_obj_id()
 
     def get_metadata(self):
         """获取DataRobot2D的元数据
@@ -47,3 +51,5 @@ class DataRobot2D(object):
 
     def __del__(self):
         kageext.call('deconstruct_datarobot2d', (self.__get_cpp_obj_id(),))
+
+
