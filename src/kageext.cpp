@@ -151,6 +151,39 @@ call(PyObject *self, PyObject *args)
         datarobot2ds_map.erase(datarobot2d_id);
 
         Py_RETURN_NONE;
+    } else if (strcmp(function, "get_item_by_row_type_str") == 0) {
+        PyObject *datarobot2d_id_obj;
+        PyObject *key;
+        const char *key_str;
+
+        ARGS_NUM_CHECK(2)
+
+        datarobot2d_id_obj = PyTuple_GET_ITEM(cpp_args, 0);
+        key = PyTuple_GET_ITEM(cpp_args, 1);
+        if (!PyArg_Parse(key, "s", &key_str)) {
+            PyErr_SetString(kageext_error, "PyArg Error");
+            return NULL;
+        }
+        std::string target(key_str);
+        std::shared_ptr<DataRobot2D> dataRobot2D = get_datarobot2d_from_pyobj(datarobot2d_id_obj);
+        if (dataRobot2D == NULL) return NULL;
+        std::shared_ptr<DataRobot2D> result = dataRobot2D->get_item_by_row_type_str(target);
+        if (result == nullptr) {
+            PyErr_SetString(PyExc_KeyError, "No such key");
+            return NULL;
+        }
+        std::string uuid = get_uuid();
+        datarobot2ds_map[uuid] = result;
+        return PyUnicode_FromString(uuid.c_str());
+    } else if (strcmp(function, "str") == 0) {
+        PyObject *datarobot2d_id_obj;
+
+        ARGS_NUM_CHECK(1)
+
+        datarobot2d_id_obj = PyTuple_GET_ITEM(cpp_args, 0);
+        std::shared_ptr<DataRobot2D> dataRobot2D = get_datarobot2d_from_pyobj(datarobot2d_id_obj);
+        std::shared_ptr<std::string> result = dataRobot2D->str();
+        return PyUnicode_FromString(result->c_str());
     }
     Py_RETURN_NONE;
 }
